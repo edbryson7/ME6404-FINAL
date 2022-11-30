@@ -1,4 +1,4 @@
-function u = actuator_limit(u, min, max)
-    u(u<min)=min;
-    u(u>max)=max;
+function u = actuator_limit(u, lim)
+    u(u<-lim)=-lim;
+    u(u>lim)=lim;
 end
