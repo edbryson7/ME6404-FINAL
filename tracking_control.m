@@ -26,7 +26,7 @@ TF_z = c2d(G_vel, ts);
 C_z = inv(TF_z)*inv(z); % Model Inversion
 
 %% Obstacle Course Trajectories
-speeds = [0.1 0.2]/2;
+speeds = [0.1 0.2]/2; % Scaling the "max" speeds to slow down the trajectories
 moves = [
     0 -55;
     570 0;
@@ -47,7 +47,7 @@ t = [];
 prev = start_pos;
 prev_t = 0;
 
-for i = 1:4
+for i = 1:4 % Iterating through each move and generating the smooth path, then adding them together
     time = times(i)+1;
     move = moves(i,:)+prev;
     [traj_x,vel_x,accel_x,t_x]=smooth_traj(prev(1),move(1),time,ts);
@@ -64,9 +64,7 @@ for i = 1:4
 end
 t = t-ts;
 
-plan_vel = traj_future(plan_vel, 1);
-
-
+plan_vel = traj_future(plan_vel, 1); % Shifting values 1 move from the future
 
 % figure()
 % hold on
@@ -79,7 +77,7 @@ plan_vel = traj_future(plan_vel, 1);
 % plot(t,accel(:,1))
 % plot(t,accel(:,2))
 % legend('a_x', 'a_y')
-% 
+
 figure()
 plot(plan_traj(:,2), plan_traj(:,1))
 
@@ -103,8 +101,13 @@ sim_pos = [x_pos y_pos];
 sim_inp = [r_x r_y];
 
 RMSE_y = rms(y_pos - plan_traj(:,2));
+
+crane_commands = round(sim_vel./[.1 .2]*100); % Generating commands for the crane
+writematrix(crane_commands, 'planned_trajectory.csv');
+
 %% Plotting
 hold on
 plot(sim_pos(:,2), sim_pos(:,1))
-sim_plotting('y', t, sim_vel(:,2), sim_pos(:,2), sim_inp(:,2), plan_vel(:,2), plan_traj(:,2));
-sim_plotting('x', t, sim_vel(:,1), sim_pos(:,1), sim_inp(:,1), plan_vel(:,1), plan_traj(:,1));
+
+sim_plotting('Y', t, sim_vel(:,2), sim_pos(:,2), sim_inp(:,2), plan_vel(:,2), plan_traj(:,2));
+sim_plotting('X', t, sim_vel(:,1), sim_pos(:,1), sim_inp(:,1), plan_vel(:,1), plan_traj(:,1));
