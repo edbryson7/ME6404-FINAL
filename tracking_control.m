@@ -40,7 +40,7 @@ start_pos = [-220, -400]/1000;
 % Time alloted based on distance/speed for each axis
 times = max((abs(moves)./speeds)')'+1;                      % ADJUST THIS LINE TO CHANGE TIMINGS
 times(1)=times(1)+0.5;
-% times(3)=times(3)+1.5;
+
 
 
 plan_traj = [];
@@ -68,9 +68,6 @@ for i = 1:4 % Iterating through each move and generating the smooth path, then a
 end
 t = t-ts;
 
-s1.traj = plan_traj; s1.time = t;
-save('trajectory.mat', '-struct', 's1');
-
 % delay = 9;
 % t = 0:ts:delay*2*pi;
 % a = 1;
@@ -82,6 +79,9 @@ save('trajectory.mat', '-struct', 's1');
 % plan_accel =diff(plan_vel)/ts;
 % plan_accel = [plan_accel; plan_accel(end,:)];
 % start_pos = [0 0];
+
+s1.traj = plan_traj; s1.time = t;
+save('eight_trajectory.mat', '-struct', 's1');
 
 % plot(plan_traj(:,2), plan_traj(:,1))
 
