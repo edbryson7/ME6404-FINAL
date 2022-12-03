@@ -76,7 +76,7 @@ traj4 = [linspace(0,m4(1),d4)',linspace(0,m4(2),d4)'] + traj3(end,:);
 
 traj = [traj1;traj2;traj3;traj4];
 
-plot(traj(:,2), traj(:,1))
+scatter(traj(:,2), traj(:,1))
 plot(obst1_y, obst1_x, 'Color', [0.6350 0.0780 0.1840]);
 plot(obst2_y, obst2_x, 'Color', [0.6350 0.0780 0.1840]);
 plot(obst3_y, obst3_x, 'Color', [0.6350 0.0780 0.1840]);

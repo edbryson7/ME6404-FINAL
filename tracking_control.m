@@ -27,7 +27,7 @@ C_z = inv(TF_z)*inv(z); % Model Inversion
 
 %% Obstacle Course Trajectories
 % Scaling the "max" speeds to slow down the trajectories
-speeds = [0.1 0.2]./[1.3 1.3];                              % ADJUST THIS LINE TO CHANGE TIMINGS
+speeds = [0.1 0.2]./[1.2 1.2];                              % ADJUST THIS LINE TO CHANGE TIMINGS
 moves = [
     0 -55;
     570 0;
@@ -38,11 +38,10 @@ total_dist = sum(abs(moves));
 start_pos = [-220, -400]/1000;
 
 % Time alloted based on distance/speed for each axis
-times = max((abs(moves)./speeds)')'+2;                      % ADJUST THIS LINE TO CHANGE TIMINGS
-% times(1)=times(1)+2
-% times(3)=times(3)+2
+times = max((abs(moves)./speeds)')'+1;                      % ADJUST THIS LINE TO CHANGE TIMINGS
+times(1)=times(1)+0.5;
+% times(3)=times(3)+1.5;
 
-fprintf("Total time: %.1f\n", sum(times))
 
 plan_traj = [];
 plan_vel = [];
@@ -72,15 +71,17 @@ t = t-ts;
 s1.traj = plan_traj; s1.time = t;
 save('trajectory.mat', '-struct', 's1');
 
-t = 0:ts:10*2*2*pi;
-a = 1;
-b = 2;
-delta = pi/2;
-plan_traj = [cos(a*t/10+delta)',sin(b*t/10)'];
-plan_vel = diff(plan_traj)/ts;
-plan_vel = [plan_vel; plan_vel(end,:)];
-plan_accel =diff(plan_vel)/ts;
-plan_accel = [plan_accel; plan_accel(end,:)];
+% delay = 9;
+% t = 0:ts:delay*2*pi;
+% a = 1;
+% b = 2;
+% delta = pi/2;
+% plan_traj = 0.5*[cos(a*t/delay+delta)',sin(b*t/delay)'];
+% plan_vel = diff(plan_traj)/ts;
+% plan_vel = [plan_vel; plan_vel(end,:)];
+% plan_accel =diff(plan_vel)/ts;
+% plan_accel = [plan_accel; plan_accel(end,:)];
+% start_pos = [0 0];
 
 % plot(plan_traj(:,2), plan_traj(:,1))
 
@@ -98,6 +99,8 @@ plot(t,plan_accel(:,1))
 plot(t,plan_accel(:,2))
 legend('a_x', 'a_y')
 
+fprintf("Total time: %.1f\n", t(end))
+
 
 
 %% Controller Testing
@@ -106,23 +109,24 @@ r_x = lsim(C_z, plan_vel(:,1), t);
 r_x = actuator_limit(r_x, 0.1); % ACTUATOR SATURATION
 
 x_vel = lsim(G_vel, r_x, t);
-x_pos = lsim(G_pos, r_x, t);%+start_pos(1);
+x_pos = lsim(G_pos, r_x, t)+start_pos(1);
 
 % Simulate y
 r_y = lsim(C_z, plan_vel(:,2), t);
 r_y = actuator_limit(r_y, 0.2); % ACTUATOR SATURATION
 
 y_vel = lsim(G_vel, r_y, t);
-y_pos = lsim(G_pos, r_y, t);%+start_pos(2);
+y_pos = lsim(G_pos, r_y, t)+start_pos(2);
 
 sim_vel = [x_vel y_vel];
 sim_pos = [x_pos y_pos];
+
 sim_inp = [r_x r_y];
 
 RMSE_x = rms(x_pos - plan_traj(:,1))
 RMSE_y = rms(y_pos - plan_traj(:,2))
 
-crane_commands = round(sim_vel./[.1 .2]*100); % Generating commands for the crane
+crane_commands = round(sim_inp./[.1 .2]*100); % Generating commands for the crane
 writematrix(crane_commands, 'planned_trajectory.csv');
 
 %% Plotting

@@ -1,8 +1,9 @@
 clc; close all; clear;
 
-plotCraneData('Data/GT_BridgeCrane_Data_700.csv', 'Bridge Crane .7m', 291)
-% plotCraneData('Data/GT_BridgeCrane_Data_1150.csv', 'Bridge Crane 1.15m', 696)
-% plotCraneData('Data/GT_BridgeCrane_Data_1730.csv', 'Bridge Crane 1.73m', 696)
+% plotCraneData('../Data/MI/MI_8figure.csv', 'Bridge Crane Figure 8', 1320)
+% plotCraneData('../Data/MI/MI_1150.csv', 'Bridge Crane 1.15m', 409)
+plotCraneData('../Data/MI/MI_1730.csv', 'Bridge Crane 1.73m', 566)
+
 
 function plotCraneData(filename, name, dataEnd)  
     data=readtable(filename);

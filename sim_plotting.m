@@ -1,4 +1,4 @@
-function sim_plotting(axis, t, sim_vel, sim_pos, sim_inp, plan_vel, plan_traj)
+function sim_plotting(axis, t, sim_vel, sim_pos, r_k, plan_vel, plan_traj)
 
     figure() % Plot of Positions Overlayed
     plot(t, plan_traj);
@@ -24,7 +24,7 @@ function sim_plotting(axis, t, sim_vel, sim_pos, sim_inp, plan_vel, plan_traj)
     ylabel('m/s')
     
     subplot(3,2,5) % controller input
-    plot(t, sim_inp)
+    plot(t, r_k)
     title('Controller Input r_k')
     xlabel('time (s)')
     ylabel('m/s')
