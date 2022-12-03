@@ -29,13 +29,15 @@ C_z = inv(TF_z)*inv(z); % Model Inversion
 % Scaling the "max" speeds to slow down the trajectories
 speeds = [0.1 0.2]./[1.2 1.2];                              % ADJUST THIS LINE TO CHANGE TIMINGS
 moves = [
-    0 -55;
+%     0 -55;        % Modified for ZV Control
+    0 -235;
     570 0;
     0 825;
     400 0]/1000;
 total_dist = sum(abs(moves));
 
 start_pos = [-220, -400]/1000;
+start_pos = [-220, -220]/1000;      % Modified for ZV Control
 
 % Time alloted based on distance/speed for each axis
 times = max((abs(moves)./speeds)')'+1;                      % ADJUST THIS LINE TO CHANGE TIMINGS
@@ -81,7 +83,7 @@ t = t-ts;
 % start_pos = [0 0];
 
 s1.traj = plan_traj; s1.time = t;
-save('eight_trajectory.mat', '-struct', 's1');
+save('mod_trajectory.mat', '-struct', 's1');
 
 % plot(plan_traj(:,2), plan_traj(:,1))
 

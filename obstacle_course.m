@@ -76,7 +76,7 @@ traj4 = [linspace(0,m4(1),d4)',linspace(0,m4(2),d4)'] + traj3(end,:);
 
 traj = [traj1;traj2;traj3;traj4];
 
-scatter(traj(:,2), traj(:,1))
+plot(traj(:,2), traj(:,1))
 plot(obst1_y, obst1_x, 'Color', [0.6350 0.0780 0.1840]);
 plot(obst2_y, obst2_x, 'Color', [0.6350 0.0780 0.1840]);
 plot(obst3_y, obst3_x, 'Color', [0.6350 0.0780 0.1840]);
@@ -86,6 +86,6 @@ plot(obst4_y, obst4_x, 'Color', [0.6350 0.0780 0.1840]);
 scatter(0, 200, 200, [0.6350 0.0780 0.1840], "filled")
 legend(["Start Position", "Goal", "Obstacles", "Trajectory"], 'Location','northwest')
 
-saveas(gcf, 'Plots/Obstacle Course.png');
+saveas(gcf, '../Plots/Obstacle Course.png');
 
 
