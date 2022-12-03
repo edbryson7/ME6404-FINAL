@@ -16,6 +16,7 @@ ylabel('x (mm)')
 % Plot Start and end values
 xstart = -220;
 ystart = -400;
+
 scatter(ystart, xstart, 100, [0 0.4470 0.7410], "filled");
 
 xgoal = 750;

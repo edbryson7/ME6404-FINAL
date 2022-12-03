@@ -72,19 +72,31 @@ t = t-ts;
 s1.traj = plan_traj; s1.time = t;
 save('trajectory.mat', '-struct', 's1');
 
+t = 0:ts:10*2*2*pi;
+a = 1;
+b = 2;
+delta = pi/2;
+plan_traj = [cos(a*t/10+delta)',sin(b*t/10)'];
+plan_vel = diff(plan_traj)/ts;
+plan_vel = [plan_vel; plan_vel(end,:)];
+plan_accel =diff(plan_vel)/ts;
+plan_accel = [plan_accel; plan_accel(end,:)];
+
+% plot(plan_traj(:,2), plan_traj(:,1))
+
 plan_vel = traj_future(plan_vel, 1); % Shifting values 1 move from the future
 
-% figure()
-% hold on
-% plot(t,plan_vel(:,1))
-% plot(t,plan_vel(:,2))
-% legend('v_x', 'v_y')
-% 
-% figure()
-% hold on
-% plot(t,plan_accel(:,1))
-% plot(t,plan_accel(:,2))
-% legend('a_x', 'a_y')
+figure()
+hold on
+plot(t,plan_vel(:,1))
+plot(t,plan_vel(:,2))
+legend('v_x', 'v_y')
+
+figure()
+hold on
+plot(t,plan_accel(:,1))
+plot(t,plan_accel(:,2))
+legend('a_x', 'a_y')
 
 
 
@@ -94,14 +106,14 @@ r_x = lsim(C_z, plan_vel(:,1), t);
 r_x = actuator_limit(r_x, 0.1); % ACTUATOR SATURATION
 
 x_vel = lsim(G_vel, r_x, t);
-x_pos = lsim(G_pos, r_x, t)+start_pos(1);
+x_pos = lsim(G_pos, r_x, t);%+start_pos(1);
 
 % Simulate y
 r_y = lsim(C_z, plan_vel(:,2), t);
 r_y = actuator_limit(r_y, 0.2); % ACTUATOR SATURATION
 
 y_vel = lsim(G_vel, r_y, t);
-y_pos = lsim(G_pos, r_y, t)+start_pos(2);
+y_pos = lsim(G_pos, r_y, t);%+start_pos(2);
 
 sim_vel = [x_vel y_vel];
 sim_pos = [x_pos y_pos];
