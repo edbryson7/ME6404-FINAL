@@ -69,22 +69,24 @@ for i = 1:4 % Iterating through each move and generating the smooth path, then a
 end
 t = t-ts;
 
+s1.traj = plan_traj; s1.time = t;
+save('trajectory.mat', '-struct', 's1');
+
 plan_vel = traj_future(plan_vel, 1); % Shifting values 1 move from the future
 
-figure()
-hold on
-plot(t,plan_vel(:,1))
-plot(t,plan_vel(:,2))
-legend('v_x', 'v_y')
+% figure()
+% hold on
+% plot(t,plan_vel(:,1))
+% plot(t,plan_vel(:,2))
+% legend('v_x', 'v_y')
+% 
+% figure()
+% hold on
+% plot(t,plan_accel(:,1))
+% plot(t,plan_accel(:,2))
+% legend('a_x', 'a_y')
 
-figure()
-hold on
-plot(t,plan_accel(:,1))
-plot(t,plan_accel(:,2))
-legend('a_x', 'a_y')
 
-figure()
-plot(plan_traj(:,2), plan_traj(:,1))
 
 %% Controller Testing
 % Simulate x
@@ -112,8 +114,12 @@ crane_commands = round(sim_vel./[.1 .2]*100); % Generating commands for the cran
 writematrix(crane_commands, 'planned_trajectory.csv');
 
 %% Plotting
+figure()
 hold on
+plot(plan_traj(:,2), plan_traj(:,1))
 plot(sim_pos(:,2), sim_pos(:,1))
+
+legend('Planned Trajectory', 'Simulated Path', 'Location', 'northwest')
 
 sim_plotting('Y', t, sim_vel(:,2), sim_pos(:,2), sim_inp(:,2), plan_vel(:,2), plan_traj(:,2));
 sim_plotting('X', t, sim_vel(:,1), sim_pos(:,1), sim_inp(:,1), plan_vel(:,1), plan_traj(:,1));

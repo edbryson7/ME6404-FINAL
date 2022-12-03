@@ -1,54 +1,67 @@
-clc;close all;clear;
+clc; close all; clear;
 
-nopause=readtable('GT_BridgeCrane_Data.csv');
+plotCraneData('Data/GT_BridgeCrane_Data_700.csv', 'Bridge Crane .7m', 291)
+% plotCraneData('Data/GT_BridgeCrane_Data_1150.csv', 'Bridge Crane 1.15m', 696)
+% plotCraneData('Data/GT_BridgeCrane_Data_1730.csv', 'Bridge Crane 1.73m', 696)
+
+function plotCraneData(filename, name, dataEnd)  
+    data=readtable(filename);
+    data(dataEnd:end,:)=[];
+
+    plan_traj= load('trajectory.mat').traj;
+
+    xstart = plan_traj(1,1);
+    ystart = plan_traj(1,2);
+    data.XCranePosition_mm_=data.XCranePosition_mm_-data.XCranePosition_mm_(1)+xstart*1000;
+    data.YCranePosition_mm_ = data.YCranePosition_mm_-data.YCranePosition_mm_(1)+ystart*1000;
     
-nopause(872:end,:)=[];
+    figure()
+    subplot(3,1,1)
+    plot(data.TimeY_dir_sec_,data.YActualVelocity_mm_sec_/1000);
+    title(sprintf("%s Y Velocity", name))
+    xlabel('time (s)')
+    ylabel('m/s')
+    
+    subplot (3,1,2)
+    plot(data.TimeY_dir_sec_,(data.YCranePosition_mm_+data.YPayloadDeflection_mm_-data.YPayloadDeflection_mm_(1))/1000);
+    title(sprintf('%s Payload Y Position', name))
+    xlabel('time (s)')
+    ylabel('m')
+    
+    subplot(3,1,3)
+    plot(data.TimeY_dir_sec_,data.YPayloadDeflection_mm_/1000);
+    title(sprintf('%s Payload Y Deflection', name))
+    xlabel('time (s)')
+    ylabel('m')
+    
 
-headers=nopause.Properties.VariableNames';
+    figure()
+    subplot(3,1,1)
+    plot(data.TimeY_dir_sec_,data.XActualVelocity_mm_sec_/1000);
+    title(sprintf('%s Payload X Velocity', name))
+    xlabel('time (s)')
+    ylabel('m/s')
+    
+    subplot (3,1,2)
+    plot(data.TimeY_dir_sec_,(data.XCranePosition_mm_+data.XPayloadDeflection_mm_-data.XPayloadDeflection_mm_(1))/1000);
+    title(sprintf('%s Payload X Position', name))
+    xlabel('time (s)')
+    ylabel('m')
+    
+    subplot(3,1,3)
+    plot(data.TimeY_dir_sec_,data.XPayloadDeflection_mm_/1000);
+    title(sprintf('%s Payload X Deflection', name))
+    xlabel('time (s)')
+    ylabel('m')
+    
 
+    figure()
+    hold on
+    plot(plan_traj(:,2), plan_traj(:,1))
+    plot((data.YCranePosition_mm_+data.YPayloadDeflection_mm_-data.YPayloadDeflection_mm_(1))/1000,(data.XCranePosition_mm_+data.XPayloadDeflection_mm_-data.XPayloadDeflection_mm_(1))/1000);
+    title(sprintf('Bridge Crane %s Payload Path', name))
+    xlabel('Y (m)')
+    ylabel('X (m)')
+    legend("Planned Trajectory", "Payload Path",'Location','northwest')
 
-figure()
-subplot(3,1,1)
-plot(nopause.TimeY_dir_sec_,nopause.YActualVelocity_mm_sec_/1000);
-title('Y Bridge Crane Velocity')
-xlabel('time (s)')
-ylabel('m/s')
-
-subplot (3,1,2)
-plot(nopause.TimeY_dir_sec_,((nopause.YCranePosition_mm_-nopause.YCranePosition_mm_(1))+nopause.YPayloadDeflection_mm_)/1000);
-title('Y Bridge Crane Payload Position')
-xlabel('time (s)')
-ylabel('m')
-
-subplot(3,1,3)
-plot(nopause.TimeY_dir_sec_,nopause.YPayloadDeflection_mm_/1000);
-title('Y Bridge Crane Payload Deflection')
-xlabel('time (s)')
-ylabel('m')
-
-
-figure()
-subplot(3,1,1)
-plot(nopause.TimeY_dir_sec_,nopause.XActualVelocity_mm_sec_/1000);
-title('X Bridge Crane Y Velocity')
-xlabel('time (s)')
-ylabel('m/s')
-
-subplot (3,1,2)
-plot(nopause.TimeY_dir_sec_,((nopause.XCranePosition_mm_-nopause.XCranePosition_mm_(1))+nopause.XPayloadDeflection_mm_)/1000);
-title('X Bridge Crane Payload Position')
-xlabel('time (s)')
-ylabel('m')
-
-subplot(3,1,3)
-plot(nopause.TimeY_dir_sec_,nopause.XPayloadDeflection_mm_/1000);
-title('X Bridge Crane Payload Deflection')
-xlabel('time (s)')
-ylabel('m')
-
-figure()
-plot(((nopause.YCranePosition_mm_-nopause.YCranePosition_mm_(1))+nopause.YPayloadDeflection_mm_)/1000,((nopause.XCranePosition_mm_-nopause.XCranePosition_mm_(1))+nopause.XPayloadDeflection_mm_)/1000);
-title('Bridge Crane Payload Trajectory')
-xlabel('time (s)')
-ylabel('m')
-
+end

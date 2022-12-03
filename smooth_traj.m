@@ -13,7 +13,7 @@ function [traj,vel,accel,t] = smooth_traj(y0, yf, tf, ts)
     traj = a0 + a1*t + a2*t.^2 + a3*t.^3;
 
     % UNCOMMENT THIS LINE FOR LINEAR TRAJECTORIES
-%     traj = linspace(y0,yf, length(t));
+%     traj = linspace(y0,yf, length(t))';
 
     vel = diff(traj)/ts;
     vel = [vel; vel(end)];

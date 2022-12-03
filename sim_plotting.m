@@ -4,7 +4,7 @@ function sim_plotting(axis, t, sim_vel, sim_pos, sim_inp, plan_vel, plan_traj)
     plot(t, plan_traj);
     hold on
     plot(t, sim_pos)
-    legend(sprintf("%s_d",axis), sprintf("%s_o_u_t",axis))
+    legend(sprintf("%s_d",axis), sprintf("%s_o_u_t",axis), 'Location','northwest')
     title(sprintf('Simulated %s Axis Tracking',axis))
     xlabel('time (s)')
     ylabel('m')
