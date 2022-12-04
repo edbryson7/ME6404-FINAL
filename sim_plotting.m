@@ -1,4 +1,4 @@
-function sim_plotting(axis, t, sim_vel, sim_pos, r_k, plan_vel, plan_traj)
+function sim_plotting(name, axis, t, sim_vel, sim_pos, r_k, plan_vel, plan_traj)
 
     figure() % Plot of Positions Overlayed
     plot(t, plan_traj);

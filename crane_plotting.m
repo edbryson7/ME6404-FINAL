@@ -6,19 +6,19 @@ smooth_traj = load('smooth_trajectory.mat');
 fast_traj = load('trajectory.mat');
 figure_eight_traj = load('eight_trajectory.mat');
 
-plotCraneData('../Data/MI/MI_8figure.csv', 'Figure 8', 1320, figure_eight_traj)
-plotCraneData('../Data/MI/MI_1150.csv', 'MI 1.15m', 409, smooth_traj)
-plotCraneData('../Data/MI/MI_1730.csv', 'MI 1.73m', 566, smooth_traj)
-plotCraneData('../Data/MI/MI_1730_fast.csv', 'MI Fast 1.73m', 362, smooth_traj)
-plotCraneData('../Data/MI/MI_1730_fast_no_obstacles.csv', 'MI Fast No Obst 1.73m', 357, smooth_traj)
-plotCraneData('../Data/MI/MI_1850.csv', 'MI 1.85m', 337, smooth_traj) %
+% plotCraneData('../Data/MI/MI_8figure.csv', 'Figure 8', 1320, figure_eight_traj)
+% plotCraneData('../Data/MI/MI_1150.csv', 'MI 1.15m', 409, smooth_traj)
+% plotCraneData('../Data/MI/MI_1730.csv', 'MI 1.73m', 566, smooth_traj)
+% plotCraneData('../Data/MI/MI_1730_fast.csv', 'MI Fast 1.73m', 362, smooth_traj)
+% plotCraneData('../Data/MI/MI_1730_fast_no_obstacles.csv', 'MI Fast No Obst 1.73m', 357, smooth_traj)
+% plotCraneData('../Data/MI/MI_1850.csv', 'MI 1.85m', 337, smooth_traj) %
 
 %% Plotting Optimal Control
-plotCraneData('../Data/Opt/Optimal_1150.csv', 'Opt 1.15m', 271, fast_traj)
-plotCraneData('../Data/Opt/Optimal_1500.csv', 'Opt 1.50m', 320, fast_traj)
-plotCraneData('../Data/Opt/Optimal_1730.csv', 'Opt 1.73m', 397, fast_traj)
-plotCraneData('../Data/Opt/Optimal_1730_no_obst.csv', 'Opt No Obst 1.73m', 351, fast_traj)
-plotCraneData('../Data/Opt/Optimal_1850.csv', 'Opt 1.85m', 336, fast_traj)
+% plotCraneData('../Data/Opt/Optimal_1150.csv', 'Opt 1.15m', 271, fast_traj)
+% plotCraneData('../Data/Opt/Optimal_1500.csv', 'Opt 1.50m', 320, fast_traj)
+% plotCraneData('../Data/Opt/Optimal_1730.csv', 'Opt 1.73m', 397, fast_traj)
+% plotCraneData('../Data/Opt/Optimal_1730_no_obst.csv', 'Opt No Obst 1.73m', 351, fast_traj)
+% plotCraneData('../Data/Opt/Optimal_1850.csv', 'Opt 1.85m', 336, fast_traj)
 
 
 
@@ -26,9 +26,9 @@ plotCraneData('../Data/Opt/Optimal_1850.csv', 'Opt 1.85m', 336, fast_traj)
 %% Plotting Input Shaping
 modified_traj = load('mod_trajectory.mat');
 plotCraneData('../Data/ZV/ZV_1150.csv', 'ZV 1.15m', 379, modified_traj)
-plotCraneData('../Data/ZV/ZV_1500.csv', 'ZV 1.50m', 514, modified_traj)
-plotCraneData('../Data/ZV/ZV_1730.csv', 'ZV 1.73m', 510, modified_traj)
-plotCraneData('../Data/ZV/ZV_1850.csv', 'ZV 1.85m', 514, modified_traj)
+plotCraneData('../Data/ZV/ZV_1500.csv', 'ZV 1.50m', 503, modified_traj)
+plotCraneData('../Data/ZV/ZV_1730.csv', 'ZV 1.73m', 528, modified_traj)
+plotCraneData('../Data/ZV/ZV_1850.csv', 'ZV 1.85m', 505, modified_traj)
 
 
 %%

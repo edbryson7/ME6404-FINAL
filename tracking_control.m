@@ -29,15 +29,16 @@ C_z = inv(TF_z)*inv(z); % Model Inversion
 % Scaling the "max" speeds to slow down the trajectories
 speeds = [0.1 0.2]./[1.2 1.2];                              % ADJUST THIS LINE TO CHANGE TIMINGS
 moves = [
-%     0 -55;        % Modified for ZV Control
-    0 -235;
+    0 -55;        
+%     0 -255;   % Modified for ZV Control
     570 0;
     0 825;
+%     0 845;  % Modified for ZV Control
     400 0]/1000;
 total_dist = sum(abs(moves));
 
 start_pos = [-220, -400]/1000;
-start_pos = [-220, -220]/1000;      % Modified for ZV Control
+% start_pos = [-220, -220]/1000;      % Modified for ZV Control
 
 % Time alloted based on distance/speed for each axis
 times = max((abs(moves)./speeds)')'+1;                      % ADJUST THIS LINE TO CHANGE TIMINGS
@@ -83,23 +84,23 @@ t = t-ts;
 % start_pos = [0 0];
 
 s1.traj = plan_traj; s1.time = t;
-save('mod_trajectory.mat', '-struct', 's1');
+% save('mod_trajectory.mat', '-struct', 's1');
 
 % plot(plan_traj(:,2), plan_traj(:,1))
 
 plan_vel = traj_future(plan_vel, 1); % Shifting values 1 move from the future
 
-figure()
-hold on
-plot(t,plan_vel(:,1))
-plot(t,plan_vel(:,2))
-legend('v_x', 'v_y')
-
-figure()
-hold on
-plot(t,plan_accel(:,1))
-plot(t,plan_accel(:,2))
-legend('a_x', 'a_y')
+% figure()
+% hold on
+% plot(t,plan_vel(:,1))
+% plot(t,plan_vel(:,2))
+% legend('v_x', 'v_y')
+% 
+% figure()
+% hold on
+% plot(t,plan_accel(:,1))
+% plot(t,plan_accel(:,2))
+% legend('a_x', 'a_y')
 
 fprintf("Total time: %.1f\n", t(end))
 
@@ -132,12 +133,44 @@ crane_commands = round(sim_inp./[.1 .2]*100); % Generating commands for the cran
 writematrix(crane_commands, 'planned_trajectory.csv');
 
 %% Plotting
-figure()
+figure() % Plot of Trajectories
 hold on
 plot(plan_traj(:,2), plan_traj(:,1))
 plot(sim_pos(:,2), sim_pos(:,1))
+legend('Desired Trajectory', 'Simulated Output', 'Location', 'northwest')
 
-legend('Planned Trajectory', 'Simulated Path', 'Location', 'northwest')
+figure() % Plot of Positions
+subplot(2,1,1)
+plot(t, plan_traj(:,1));
+hold on
+plot(t, sim_pos(:,1))
+legend("x_d", "x", 'Location','northwest')
+title('X Axis Tracking')
+xlabel('time (s)')
+ylabel('m')
 
-sim_plotting('Y', t, sim_vel(:,2), sim_pos(:,2), sim_inp(:,2), plan_vel(:,2), plan_traj(:,2));
-sim_plotting('X', t, sim_vel(:,1), sim_pos(:,1), sim_inp(:,1), plan_vel(:,1), plan_traj(:,1));
+subplot(2,1,2)
+plot(t, plan_traj(:,2));
+hold on
+plot(t, sim_pos(:,2))
+legend("y_d", "y", 'Location','northwest')
+title('Y Axis Tracking')
+xlabel('time (s)')
+ylabel('m')
+
+
+figure() % Plot of Control Effort and 
+subplot(2,1,1)
+plot(t, sim_inp(:,1));
+title('R_x(k)')
+xlabel('time (s)')
+ylabel('m/s')
+
+subplot(2,1,2)
+plot(t, sim_inp(:,2));
+title('R_y(k)')
+xlabel('time (s)')
+ylabel('m/s')
+
+% sim_plotting('', 'y', t, sim_vel(:,2), sim_pos(:,2), sim_inp(:,2), plan_vel(:,2), plan_traj(:,2));
+% sim_plotting('', 'x', t, sim_vel(:,1), sim_pos(:,1), sim_inp(:,1), plan_vel(:,1), plan_traj(:,1));
