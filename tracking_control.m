@@ -84,7 +84,7 @@ t = t-ts;
 % start_pos = [0 0];
 
 s1.traj = plan_traj; s1.time = t;
-% save('mod_trajectory.mat', '-struct', 's1');
+% save('temp.mat', '-struct', 's1');
 
 % plot(plan_traj(:,2), plan_traj(:,1))
 
