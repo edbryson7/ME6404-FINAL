@@ -135,25 +135,28 @@ writematrix(crane_commands, 'planned_trajectory.csv');
 %% Plotting
 figure() % Plot of Trajectories
 hold on
-plot(plan_traj(:,2), plan_traj(:,1))
 plot(sim_pos(:,2), sim_pos(:,1))
-legend('Desired Trajectory', 'Simulated Output', 'Location', 'northwest')
+plot(plan_traj(:,2), plan_traj(:,1), '--')
+
+legend('Simulated Output', 'Desired Trajectory', 'Location', 'northwest')
 
 figure() % Plot of Positions
 subplot(2,1,1)
-plot(t, plan_traj(:,1));
 hold on
 plot(t, sim_pos(:,1))
-legend("x_d", "x", 'Location','northwest')
+plot(t, plan_traj(:,1),'--');
+
+legend("x", "x_d", 'Location','northwest')
 title('X Axis Tracking')
 xlabel('time (s)')
 ylabel('m')
 
 subplot(2,1,2)
-plot(t, plan_traj(:,2));
 hold on
 plot(t, sim_pos(:,2))
-legend("y_d", "y", 'Location','northwest')
+plot(t, plan_traj(:,2),'--');
+
+legend("y", "y_d", 'Location','northwest')
 title('Y Axis Tracking')
 xlabel('time (s)')
 ylabel('m')
@@ -171,6 +174,7 @@ plot(t, sim_inp(:,2));
 title('R_y(k)')
 xlabel('time (s)')
 ylabel('m/s')
+set(gcf, 'Position',  [100, 100, 700, 500])
 
 % sim_plotting('', 'y', t, sim_vel(:,2), sim_pos(:,2), sim_inp(:,2), plan_vel(:,2), plan_traj(:,2));
 % sim_plotting('', 'x', t, sim_vel(:,1), sim_pos(:,1), sim_inp(:,1), plan_vel(:,1), plan_traj(:,1));
